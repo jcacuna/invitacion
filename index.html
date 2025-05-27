@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¡Revelación Sorpresa!</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        background: #f9f4f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+        color: #333;
+        transition: background 0.5s;
+      }
+
+      .invitation-card {
+        width: 90%;
+        max-width: 600px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 30px 50px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+        border: 2px solid #74b9ff;
+        transition: transform 0.3s, box-shadow 0.3s;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="%23e84393" opacity="0.2"/><circle cx="50" cy="50" r="2" fill="%23fd79a8" opacity="0.2"/><circle cx="80" cy="30" r="4" fill="%2374b9ff" opacity="0.2"/><circle cx="30" cy="70" r="3" fill="%23e84393" opacity="0.2"/><circle cx="70" cy="80" r="2" fill="%23fd79a8" opacity="0.2"/></svg>');
+        background-size: 200px;
+      }
+
+      .invitation-card::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: linear-gradient(45deg, #ff9a9e, #74b9ff, #fd79a8, #a8e6ff);
+        background-size: 400% 400%;
+        z-index: -1;
+        border-radius: 25px;
+        opacity: 0.7;
+        animation: gradientBorder 8s ease infinite;
+      }
+
+      @keyframes gradientBorder {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .card-content {
+        padding: 40px;
+        text-align: center;
+        position: relative;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        margin: 5px;
+      }
+
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #e84393;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        display: inline-block;
+      }
+
+      h1::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, #e84393, #74b9ff);
+        border-radius: 3px;
+      }
+
+      p {
+        margin: 15px 0;
+        line-height: 1.6;
+      }
+
+      .date-place {
+        margin: 25px 0;
+        font-weight: 600;
+        background: linear-gradient(45deg, #e84393, #74b9ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 1.2rem;
+      }
+
+      .reveal-btn {
+        background: linear-gradient(45deg, #e84393, #fd79a8);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow: 0 10px 20px rgba(232, 67, 147, 0.3);
+        transition: all 0.4s;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .reveal-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #74b9ff, #a8e6ff);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .reveal-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(232, 67, 147, 0.4);
+      }
+
+      .reveal-btn:hover::before {
+        opacity: 1;
+      }
+
+      .countdown {
+        font-size: 5rem;
+        font-weight: bold;
+        margin: 30px 0;
+        display: none;
+        color: #e84393;
+        text-shadow: 0 0 10px rgba(232, 67, 147, 0.5);
+      }
+
+      .gender-reveal {
+        font-size: 5rem;
+        margin: 20px 0;
+        display: none;
+        animation: pulse 1s infinite;
+        text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .footer {
+        margin-top: 30px;
+        font-style: italic;
+        color: #666;
+      }
+
+      /* Efecto flash */
+      @keyframes flash {
+        0% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.3;
+        }
+      }
+
+      .flashing {
+        animation: flash 0.5s infinite;
+      }
+
+      /* Efecto de explosión */
+      .explosion {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .boy-theme {
+        background: linear-gradient(
+          135deg,
+          #74b9ff 0%,
+          #a8e6ff 100%
+        ) !important;
+      }
+
+      .girl-theme {
+        background: linear-gradient(
+          135deg,
+          #ff9a9e 0%,
+          #fad0c4 100%
+        ) !important;
+      }
+
+      .boy-text {
+        color: #0984e3;
+      }
+
+      .girl-text {
+        color: #e84393;
+      }
+
+      /* Globos */
+      .balloon {
+        position: absolute;
+        width: 40px;
+        height: 50px;
+        border-radius: 50%;
+        z-index: -1;
+        opacity: 0;
+      }
+
+      .balloon::before {
+        content: "";
+        position: absolute;
+        width: 1px;
+        height: 50px;
+        background: rgba(0, 0, 0, 0.2);
+        bottom: -50px;
+        left: 50%;
+      }
+
+      /* Confeti */
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #f00;
+        opacity: 0;
+        z-index: 10;
+      }
+
+      /* Corazones */
+      .heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e84393"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>')
+          no-repeat center center;
+        background-size: contain;
+        opacity: 0;
+        z-index: 1;
+      }
+
+      /* Estrellas */
+      .star {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>')
+          no-repeat center center;
+        background-size: contain;
+        opacity: 0;
+        z-index: 1;
+      }
+
+      /* Ribbon */
+      .ribbon {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        z-index: 2;
+      }
+
+      .ribbon::before,
+      .ribbon::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        display: block;
+        border: 5px solid #e84393;
+        border-top-color: transparent;
+        border-right-color: transparent;
+      }
+
+      .ribbon::before {
+        top: 0;
+        left: 0;
+      }
+
+      .ribbon::after {
+        bottom: 0;
+        right: 0;
+      }
+
+      .ribbon span {
+        position: absolute;
+        display: block;
+        width: 225px;
+        padding: 15px 0;
+        background-color: #e84393;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        color: #fff;
+        font: 700 18px/1 "Playfair Display", serif;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      /* Ribbon top-right*/
+      .ribbon-top-right {
+        top: -10px;
+        right: -10px;
+      }
+
+      .ribbon-top-right::before,
+      .ribbon-top-right::after {
+        border-top-color: transparent;
+        border-right-color: transparent;
+      }
+
+      .ribbon-top-right::before {
+        top: 0;
+        left: 0;
+      }
+
+      .ribbon-top-right::after {
+        bottom: 0;
+        right: 0;
+      }
+
+      .ribbon-top-right span {
+        left: -25px;
+        top: 30px;
+        transform: rotate(45deg);
+      }
+
+      /* Ribbon bottom-left*/
+      .ribbon-bottom-left {
+        bottom: -10px;
+        left: -10px;
+      }
+
+      .ribbon-bottom-left::before,
+      .ribbon-bottom-left::after {
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+      }
+
+      .ribbon-bottom-left::before {
+        top: 0;
+        left: 0;
+      }
+
+      .ribbon-bottom-left::after {
+        bottom: 0;
+        right: 0;
+      }
+
+      .ribbon-bottom-left span {
+        right: -25px;
+        bottom: 30px;
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invitation-card">
+      <!-- Ribbons -->
+      <div class="ribbon ribbon-top-right">
+        <span>¡Sorpresa!</span>
+      </div>
+      <div class="ribbon ribbon-bottom-left">
+        <span>Revelación</span>
+      </div>
+
+      <div class="card-content">
+        <div id="initialContent">
+          <h1>¡La Gran Revelación!</h1>
+          <p>
+            "Un nuevo latido llegó a nuestras vidas, y aunque aún es un secreto
+            si es princesita o principito, una cosa es segura: este bebé ya te
+            quiere a ti. 💕
+          </p>
+          <p>
+            Te esperamos con ilusión para que juntos descubramos el dulce
+            misterio que guarda nuestro pequeño milagro.
+          </p>
+
+          <div class="date-place">
+            📅 Fecha: [Día/Mes]<br />
+            ⏰ Hora: [Hora]<br />
+            📍 Lugar: [Ubicación]
+          </div>
+
+          <p>
+            Porque los mejores momentos se viven en compañía, y este… ¡será
+            inolvidable! 🌟
+          </p>
+
+          <button class="reveal-btn" id="revealBtn">¡Descubre Ahora!</button>
+        </div>
+
+        <div class="countdown" id="countdown">10</div>
+
+        <div id="revealContent" style="display: none">
+          <h1>¡Es un...</h1>
+          <div class="gender-reveal" id="genderReveal">👶</div>
+          <p id="revealMessage">¡Estamos muy felices!</p>
+          <p class="footer">Con amor,<br />JHAN & KIMBERLY</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="explosion" id="explosion"></div>
+
+    <script>
+      const revealBtn = document.getElementById("revealBtn");
+      const countdown = document.getElementById("countdown");
+      const initialContent = document.getElementById("initialContent");
+      const revealContent = document.getElementById("revealContent");
+      const genderReveal = document.getElementById("genderReveal");
+      const explosion = document.getElementById("explosion");
+      const body = document.body;
+      const revealMessage = document.getElementById("revealMessage");
+      const invitationCard = document.querySelector(".invitation-card");
+
+      // Colores para el efecto flash
+      const flashColors = [
+        "#ff9a9e",
+        "#fad0c4",
+        "#74b9ff",
+        "#a8e6ff",
+        "#e84393",
+        "#fd79a8",
+      ];
+      let countdownInterval;
+      let flashInterval;
+
+      // Crear globos
+      function createBalloons() {
+        const colors = [
+          "#e84393",
+          "#74b9ff",
+          "#fd79a8",
+          "#a8e6ff",
+          "#ff9a9e",
+          "#fad0c4",
+        ];
+        for (let i = 0; i < 15; i++) {
+          const balloon = document.createElement("div");
+          balloon.className = "balloon";
+          balloon.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          balloon.style.left = Math.random() * 100 + "vw";
+          balloon.style.bottom = "-100px";
+          balloon.style.opacity = "0.7";
+          document.body.appendChild(balloon);
+
+          // Animación de globos flotando
+          setTimeout(() => {
+            balloon.style.transition = `all ${8 + Math.random() * 7}s linear`;
+            balloon.style.bottom = "100vh";
+            balloon.style.left =
+              parseFloat(balloon.style.left) + (Math.random() * 40 - 20) + "px";
+          }, Math.random() * 3000);
+        }
+      }
+
+      // Crear confeti
+      function createConfetti() {
+        for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement("div");
+          confetti.className = "confetti";
+          confetti.style.background =
+            flashColors[Math.floor(Math.random() * flashColors.length)];
+          confetti.style.left = Math.random() * 100 + "vw";
+          confetti.style.top = "-10px";
+          confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+          confetti.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+          confetti.style.width = Math.random() * 10 + 5 + "px";
+          confetti.style.height = Math.random() * 10 + 5 + "px";
+          document.body.appendChild(confetti);
+
+          // Animación de confeti cayendo
+          setTimeout(() => {
+            confetti.style.transition = `all ${
+              3 + Math.random() * 5
+            }s cubic-bezier(0.1, 0.8, 0.9, 1)`;
+            confetti.style.opacity = "0.8";
+            confetti.style.top = "100vh";
+            confetti.style.left =
+              parseFloat(confetti.style.left) +
+              (Math.random() * 200 - 100) +
+              "px";
+
+            // Eliminar después de la animación
+            setTimeout(() => {
+              confetti.remove();
+            }, 5000);
+          }, Math.random() * 1000);
+        }
+      }
+
+      // Crear corazones y estrellas
+      function createHeartsAndStars() {
+        for (let i = 0; i < 20; i++) {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.top = Math.random() * 100 + "vh";
+          heart.style.opacity = "0";
+          heart.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+          document.body.appendChild(heart);
+
+          // Animación de corazones
+          setTimeout(() => {
+            heart.style.transition = "all 2s ease-out";
+            heart.style.opacity = "0.6";
+            heart.style.top = parseFloat(heart.style.top) - 50 + "px";
+
+            // Eliminar después de la animación
+            setTimeout(() => {
+              heart.remove();
+            }, 2000);
+          }, Math.random() * 3000);
+        }
+
+        for (let i = 0; i < 20; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          star.style.left = Math.random() * 100 + "vw";
+          star.style.top = Math.random() * 100 + "vh";
+          star.style.opacity = "0";
+          star.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+          document.body.appendChild(star);
+
+          // Animación de estrellas
+          setTimeout(() => {
+            star.style.transition = "all 3s ease-out";
+            star.style.opacity = "0.6";
+            star.style.top = parseFloat(star.style.top) - 70 + "px";
+
+            // Eliminar después de la animación
+            setTimeout(() => {
+              star.remove();
+            }, 3000);
+          }, Math.random() * 3000);
+        }
+      }
+
+      revealBtn.addEventListener("click", function () {
+        // Crear efectos visuales
+        createBalloons();
+        createConfetti();
+        createHeartsAndStars();
+
+        // Ocultar contenido inicial y mostrar countdown
+        initialContent.style.display = "none";
+        countdown.style.display = "block";
+        revealBtn.style.display = "none";
+
+        // Iniciar countdown
+        let timeLeft = 10;
+        countdown.textContent = timeLeft;
+
+        // Efecto flash del fondo
+        flashInterval = setInterval(() => {
+          const randomColor =
+            flashColors[Math.floor(Math.random() * flashColors.length)];
+          body.style.background = randomColor;
+        }, 300);
+
+        // Countdown
+        countdownInterval = setInterval(() => {
+          timeLeft--;
+          countdown.textContent = timeLeft;
+
+          // Efecto especial cuando llega a 3 segundos
+          if (timeLeft <= 3) {
+            countdown.classList.add("flashing");
+            invitationCard.style.transform = "scale(1.05)";
+            setTimeout(() => {
+              invitationCard.style.transform = "scale(1)";
+            }, 200);
+          }
+
+          // Cuando termina el countdown
+          if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            clearInterval(flashInterval);
+            finishReveal();
+          }
+        }, 1000);
+      });
+
+      function finishReveal() {
+        // Restaurar fondo
+        body.style.background = "#f9f4f9";
+
+        // Ocultar countdown
+        countdown.style.display = "none";
+
+        // Mostrar revelación
+        revealContent.style.display = "block";
+
+        // Determinar sexo (aquí puedes cambiar a true/false según el resultado real)
+        const isGirl = Math.random() > 0.5;
+
+        // Efecto explosión de color
+        explosion.style.background = isGirl
+          ? "radial-gradient(circle, #ff9a9e, #fad0c4)"
+          : "radial-gradient(circle, #74b9ff, #a8e6ff)";
+        explosion.style.opacity = "0.8";
+        explosion.style.transition = "opacity 2s";
+
+        // Mostrar resultado
+        if (isGirl) {
+          genderReveal.textContent = "👧 NIÑA";
+          genderReveal.className = "gender-reveal girl-text";
+          revealMessage.textContent = "¡Una princesa está en camino!";
+          revealMessage.innerHTML =
+            "Traer pañitos húmedos y amor<br><small>Antes de nacer, ya tiene un lugar en tu corazón 👶💫</small>";
+          body.classList.add("girl-theme");
+        } else {
+          genderReveal.textContent = "👦 NIÑO";
+          genderReveal.className = "gender-reveal boy-text";
+          revealMessage.textContent = "¡Un pequeño guerrero viene!";
+          revealMessage.innerHTML =
+            "Traer pañales y amor<br><small>Antes de nacer, ya tiene un lugar en tu corazón 👶💫</small>";
+          body.classList.add("boy-theme");
+        }
+
+        // Desvanecer explosión
+        setTimeout(() => {
+          explosion.style.opacity = "0";
+        }, 1000);
+
+        // Mostrar animación de pulso
+        genderReveal.style.display = "block";
+
+        // Más confeti después de la revelación
+        setTimeout(createConfetti, 500);
+        setTimeout(createConfetti, 1000);
+        setTimeout(createConfetti, 1500);
+      }
+    </script>
+  </body>
+</html>
