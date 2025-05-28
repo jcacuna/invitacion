@@ -185,6 +185,7 @@
         margin-top: 30px;
         font-style: italic;
         color: #666;
+        font-weight: bold;
       }
 
       /* Efecto flash */
@@ -419,9 +420,9 @@
           </p>
 
           <div class="date-place">
-            📅 Fecha: [Día/Mes]<br />
-            ⏰ Hora: [Hora]<br />
-            📍 Lugar: [Ubicación]
+            Fecha: 01/06/2025<br />
+            Hora: 3:30pm<br />
+             Lugar: calle 15 9-213
           </div>
 
           <p>
@@ -429,13 +430,13 @@
             inolvidable! 🌟
           </p>
 
-          <button class="reveal-btn" id="revealBtn">¡Descubre Ahora!</button>
+          <button class="reveal-btn" id="revealBtn">¡PRECIONAME Y DESCUBRELO!</button>
         </div>
 
         <div class="countdown" id="countdown">10</div>
 
         <div id="revealContent" style="display: none">
-          <h1>¡Es un...</h1>
+          <p id="sexo" style="text-align: center; font-size: 32px; color: #0984e3;"></p>
           <div class="gender-reveal" id="genderReveal">👶</div>
           <p id="revealMessage">¡Estamos muy felices!</p>
           <p class="footer">Con amor,<br />JHAN & KIMBERLY</p>
@@ -451,6 +452,7 @@
       const initialContent = document.getElementById("initialContent");
       const revealContent = document.getElementById("revealContent");
       const genderReveal = document.getElementById("genderReveal");
+      const sexo = document.getElementById("sexo")
       const explosion = document.getElementById("explosion");
       const body = document.body;
       const revealMessage = document.getElementById("revealMessage");
@@ -647,6 +649,8 @@
 
         // Mostrar resultado
         if (isGirl) {
+          sexo.textContent = "Es una";
+          sexo.className = "girl-text"
           genderReveal.textContent = "👧 NIÑA";
           genderReveal.className = "gender-reveal girl-text";
           revealMessage.textContent = "¡Una princesa está en camino!";
@@ -654,6 +658,8 @@
             "Traer pañitos húmedos y amor<br><small>Antes de nacer, ya tiene un lugar en tu corazón 👶💫</small>";
           body.classList.add("girl-theme");
         } else {
+          sexo.textContent = "Es un";
+          sexo.className = "boy-text"
           genderReveal.textContent = "👦 NIÑO";
           genderReveal.className = "gender-reveal boy-text";
           revealMessage.textContent = "¡Un pequeño guerrero viene!";

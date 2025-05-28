@@ -1,0 +1,88 @@
+ /* Estilos para la portada */
+ .cover-container {
+     width: 100%;
+     height: 100vh;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     position: relative;
+     overflow: hidden;
+ }
+
+ .cover-image {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     position: absolute;
+     z-index: 1;
+ }
+
+ .cover-overlay {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     background: rgba(0, 0, 0, 0.3);
+     z-index: 2;
+ }
+
+ .cover-content {
+     position: relative;
+     z-index: 3;
+     text-align: center;
+     color: white;
+     padding: 20px;
+     max-width: 800px;
+ }
+
+ .cover-title {
+     font-family: "Playfair Display", serif;
+     font-size: 3.5rem;
+     margin-bottom: 20px;
+     color: white;
+     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+ }
+
+ .cover-subtitle {
+     font-size: 1.5rem;
+     margin-bottom: 30px;
+     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+ }
+
+ .enter-btn {
+     background: linear-gradient(45deg, #e84393, #fd79a8);
+     color: white;
+     border: none;
+     padding: 15px 40px;
+     font-size: 1.2rem;
+     border-radius: 50px;
+     cursor: pointer;
+     margin-top: 20px;
+     box-shadow: 0 10px 20px rgba(232, 67, 147, 0.3);
+     transition: all 0.4s;
+     position: relative;
+     overflow: hidden;
+     z-index: 1;
+ }
+
+ .enter-btn:hover {
+     transform: translateY(-3px);
+     box-shadow: 0 15px 30px rgba(232, 67, 147, 0.4);
+ }
+
+ .enter-btn::after {
+     content: "";
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: linear-gradient(45deg, #74b9ff, #a8e6ff);
+     z-index: -1;
+     opacity: 0;
+     transition: opacity 0.4s;
+ }
+
+ .enter-btn:hover::after {
+     opacity: 1;
+ }
